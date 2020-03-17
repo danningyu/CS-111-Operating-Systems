@@ -1,0 +1,33 @@
+NAME: Chelsey Wang,Danning Yu
+EMAIL: chelseyyywang@gmail.com,danningyu@ucla.edu
+ID: 705124638,305087992
+
+Files: lab3b.py, lab3b.sh, a Makefile, and this README.
+
+The python program takes in a .csv file, and analyzes it for, and prints out, inconsistencies. 
+It checks for invalid blocks (block numbers that are out of bounds), blocks that are 
+not on the free block list or allocated to a single file (unreferenced blocks), allocated blocks
+that are also found on the free list, and blocks that are referenced by multiple files or times. 
+
+For inodes, it also checks if it is valid (within bounds) or if it is unallocated. Next, it checks if 
+there are allocated inodes on the freelist, and if there are unallocated inodes not on the free list. 
+It also compares reference counts and number of discovered links for every inode. Lastly, it checks
+if the inodes named '.' and '..' links correctly to itself and its parent, respectively. 
+
+The shell script lab3b.sh simply contains a command to build and run the python program. 
+
+The Makefile has a "default" target which runs the bash script, "dist" to create the tarball, and 
+"clean" to remove the executable and tarball. 
+
+
+http://www.nongnu.org/ext2-doc/ext2.html
+https://www.pythonforbeginners.com/system/python-sys-argv
+https://www.w3schools.com/python/ref_string_split.asp
+https://www.tutorialspoint.com/python/python_loop_control.htm
+https://www.geeksforgeeks.org/sets-in-python/
+https://www.w3resource.com/python-exercises/sets/python-sets-exercise-1.php
+https://www.geeksforgeeks.org/python-remove-discard-sets/
+https://www.geeksforgeeks.org/intersection-function-python/
+https://docs.python.org/3/tutorial/classes.html
+https://realpython.com/iterate-through-dictionary-python/#iterating-through-values
+https://www.programiz.com/python-programming/set

@@ -1,0 +1,37 @@
+NAME: Danning Yu
+EMAIL: danningyu@ucla.edu
+ID: 305087992
+
+Included files in the tarball:
+
+lab4c_tcp.c: Source code for this project, written in C, to communicate with the TCP server. It takes in the required arguments --log (file to log all commands and output to), --host (lever.cs.ucla.edu for the TCP server), --id (a unique identifier ID), and a non-switch port parameter (for the port of the server). It also still accepts the --period and --scale arguments, although the values may be changed upon communication with the server. The v1.2 temperature sensor should be connected to the AIO 0/1 port on the Beaglebone shield.
+
+lab4c_tls.c: Source code for this project, written in C, that builds upon the code in lab4c_tcp.c and adds encryption in order to communicate with a TLS server. It retains all the same command line options as before. When it connects to the server, it automatically negotiates the highest version of TLS available. The hardware for this code is the same as that for lab4c_tcp.c.
+
+Makefile: A file for compiling lab4c_tcp.c and lab4c_tls.c. It has the following targets:
+	default: builds lab4c_tcp_target and lab4c_tls_target
+	lab4c_tcp_target: builds the lab4c_tcp executable, with additional links to the mraa and math library (-lmraa and -lm)
+	lab4c_tls_target: builds the lab4c_tls executable, with additional links to the mraa, math, and TLS libraries (-lmraa, -lm, -lssl and -lcrypto)
+	dist: creates the submission tarball containing the files described in this README
+	clean: deletes lab4c_tcp, lab4c_tls, and the tarball, returning the directory to its freshly untarred state.
+
+README: the file that you are currently reading.
+
+Note: To compile the code, you must have the SSL libraries (-lssl and -lcrypto). They can be installed using:
+$ apt-get install libssl-dev
+
+Sources used for this project:
+Alexandre Tiard's project 4C discussion slides
+https://linux.die.net/man/3/ctime
+http://man7.org/linux/man-pages/man2/write.2.html
+https://linux.die.net/man/3/sprintf
+https://www.thegeekstuff.com/2010/09/change-timezone-in-linux/
+https://linux.die.net/man/3/clock_gettime
+http://man7.org/linux/man-pages/man2/poll.2.html
+https://linux.die.net/man/2/creat
+MRAA library documentation: https://iotdk.intel.com/docs/master/mraa/index.html
+http://wiki.seeedstudio.com/Grove-Temperature_Sensor_V1.2/
+https://www.geeksforgeeks.org/socket-programming-cc/
+My lab 1B submission (for socket programming)
+https://aticleworld.com/ssl-server-client-using-openssl-in-c/
+http://fm4dd.com/openssl/sslconnect.shtm

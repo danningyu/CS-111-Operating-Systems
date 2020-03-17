@@ -1,0 +1,43 @@
+NAME: Danning Yu
+EMAIL: danningyu@ucla.edu
+ID: 305087992
+
+The following files are included in the tarball:
+
+lab1a.c: Source code for this project, written in C, that uses getopt_long to parse the arguments --shell and --debug, and has two modes: simple echo back and spawning a subshell. If the --shell option is not used, the program will simply take in input and echo it back to the terminal, but in a modified terminal mode: one character at a time, non-canonical input mode with no echo. It responds to ^D to close the program. If the --shell option is specified, the code spawns a child process that is a bash shell, and users can type in commands and the results of bash execution are displayed on the screen (with the same terinal settings as when the --shell option is not specified). If ^C is typed, a SIGINT is sent to the child, and this is detected by the parent program and both close with exit status 1. The --debug option turns on print statements that help track the program's execution progress and location by printing statements to stderr.
+
+Makefile: A file for compiling lab1a.c, creating a distribution tarball, and removing files created by the compilation process. The "default" target compiles lab1a.c with warning flags turned on into an executable named lab1a. The "dist" target creates a tarball of lab1a.c, this README file, and the Makefile. The "clean" target removes lab1a, the tarball, and any text files that may have been created by file redirection, thus restoring the directory to a freshly untarred state.
+
+README: This is the current file that you are reading.
+
+
+For research, I used the following resources to research the functions that I used in my program:
+man pages (for all functions that I used)
+termios: https://blog.nelhage.com/2009/12/a-brief-introduction-to-termios-termios3-and-stty/
+termios: https://www.gnu.org/software/libc/manual/html_node/Noncanon-Example.html
+termios: http://man7.org/linux/man-pages/man3/termios.3.html
+poll: https://linux.die.net/man/3/poll
+poll: https://www.linuxtoday.com/blog/multiplexed-i0-with-poll.html
+SIGINT and other signals: http://man7.org/linux/man-pages/man7/signal.7.html
+atexit: http://man7.org/linux/man-pages/man3/atexit.3.html
+Process status: https://www.gnu.org/software/libc/manual/html_node/Process-Completion-Status.html
+getopt_long: https://linux.die.net/man/3/getopt_long
+errno: http://man7.org/linux/man-pages/man3/errno.3.html
+pipe and fork: https://www.geeksforgeeks.org/c-program-demonstrate-fork-and-pipe/
+exec: https://ece.uwaterloo.ca/~dwharder/icsrts/Tutorials/fork_exec/
+
+I manually tested it by issuing the following commands. Commands are surrounded in single quotes: '[command]'.
+
+Test 1: './lab1a', and then typed characters to make sure they were echoed back. Also used backspace and confirmed that it did not work. Then, pressed enter on my keyboard and made sure the cursor moved to the left side of the next line, confirming that \n got translated into \r\n. Finally, I typed ^D to test that the program would terminate. After it terminated, I used 'echo $?' to confirm that the exit status was 0.
+
+Test 2: './lab1a --badarg': Testing to see if it recognizes bad arguments. Then used 'echo $?' to make sure the exit code is 1.
+
+Test 3: './lab1a shouldnotbehere': Testing to see if it recognizes bad arguments. Then used 'echo $?' to make sure the exit code is 1.
+
+Test 4: './lab1a --shell=nonexistentprograms': Testing to see if it recognizes bad arguments. Then used 'echo $?' to make sure the exit code is 1.
+
+Test 5: './lab1a --shell', and then I typed commands like 'ls', 'pwd', and 'find .' to make sure they worked and that the correct output was sent to the screen. I also pressed enter a couple times and made sure the cursor ended up on the left side of the next line down, confirming that \n was turned into \r\n. Then, I typed in ^C to confirm that it would get printed to the screen and that the exit status and signal would be reported. Then I used 'echo $?' to confirm that the exit code was 0.
+
+Test 6: './lab1a --shell', and then I typed a couple commands like test 5, and then typed in ^D to confirm that would terminate the program and that the exit status and signal would be reported. Then I used 'echo $?' to confirm that the exit code was 0.
+
+After every test, I played around with the terminal to make sure the normal terminal settings had been restored.

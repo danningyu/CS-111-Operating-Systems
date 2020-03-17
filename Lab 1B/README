@@ -1,0 +1,24 @@
+NAME: Danning Yu
+EMAIL: danningyu@ucla.edu
+ID: 305087992
+
+The following files are included in the tarball:
+
+lab1b-server.c: C code for the server part of this project. It uses getopt_long to parse --port=port_number and --compress arguments, with the former argument providing a port number to establish a socket over and the --compress argument enabling compression of data sent out to any programs connected to the server. The server automatically spawns a child process that is a shell, and the server forwards any text received from connected clients to the shell as input. Then, the shell executes the commands and forwards the output back to the server, which then compresses it if the --compress option is enabled and then the server sends the output over the socket connection to the client. A ^C received from the connected client can be used to stop the server by sending a SIGINT, and a ^D from the connected client will close the shell program. Upon shutdown, the server will display the exit signal and code from its child shell.
+
+lab1b-client.c: C code for the client part of this project. It uses It uses getopt_long to parse --port=port_number, --log=file_name, and --compress arguments. The --port and --compress arguments work the same as described for lab1b-server.c above, and the --log option enables logging of all outgoing and incoming data to and from the client. The client establishes connection to a server on the specified port_number, and then takes input from the keyboard and forwards it onwards to the socket so that it can reach the server. Then, it reads any data from the server and displays it on the screen. If the --compress option is enabled, it compresses data before sending it to the server and decompresses the compressed data received from the server.
+
+Makefile: A file for comipling lab1b-server.c and lab1b-client.c. It has targets for each individual program, as well as a default target that compiles both. Because zlib is used, the gcc options include -lz, which links the zlib library to the compiled executable. A dist option is used to create a tarball, and clean for removing files that may arise from compilation, making the tarball, and/or log file output.
+
+README: A description of lab 1B and what's in the tarball. You are currently reading the file.
+
+For research, I used the following resources, in addition to the resources I used for lab 1A:
+
+socket(7): http://man7.org/linux/man-pages/man7/socket.7.html
+zlib documentation: https://www.zlib.net/manual.html
+zlib tutorial: https://www.zlib.net/zlib_how.html
+socket tutorial: http://www.cs.rpi.edu/~moorthy/Courses/os98/Pgms/socket.html
+ulimit: https://www.manpagez.com/man/1/ulimit/
+POLLUP and POLLERR: https://stackoverflow.com/questions/24791625/how-to-handle-the-linux-socket-revents-pollerr-pollhup-and-pollnval
+
+The test cases were roughly the same as project 1A. In addition to running the sanity check, I did small input (such as doing ls), large input (find /), typing ^D into the client, and typing ^C into the client. I ran these tests with and without the --compress option, and with and without the --log option. I also created a log file with no read or write permissions to test system call failure checking. After each program terminated, I checked the exit code to make sure it was correct.

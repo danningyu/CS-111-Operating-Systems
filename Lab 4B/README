@@ -1,0 +1,23 @@
+NAME: Danning Yu
+EMAIL: danningyu@ucla.edu
+ID: 305087992
+
+lab4b.c: Source code for this project, written in C, that uses getopt_long to parse the arguments --scale, --period, and --log. The --scale picks if the temperature output is to be in Celsius or Farenheit; the period picks the sampling peirod of the sensor (integer values only, in seconds), and the --log option enables logging of all commands and outputs to a log file. The compiled executable works with a Beaglebone that has a button connected on the GPIO_50 slot and a v1.2 temperature sensor connected to the A0/1 slot.
+
+Makefile: A file for compiling lab4b.c, creating a distribution tarball, doing a smoke check, and removing files created by the compilation process. The "default" target compiles lab4b.c with warning flags turned on into an executable named lab4b. The "dist" target creates a tarball of lab4b.c, this README file, the Makefile, and a smoke check script, smoketest.sh. The "check" target runs the smoke check for the program. The "clean" target removes lab4b, the tarball, and any text files that may have been created by file redirection, thus restoring the directory to a freshly untarred state.
+
+smoketest.sh: A shell script file containing various scripts to validate basic functionality of the lab4b program, including making sure a log file is created, commands are logged, keyboard commands are recognized and responded to, temperature output is in the correct format, and bad command-line arguments are recognized.
+
+README: This is the current file that you are reading.
+
+Sources used for this project:
+Alexandre Tiard's discussion slides
+https://linux.die.net/man/3/ctime
+http://man7.org/linux/man-pages/man2/write.2.html
+https://linux.die.net/man/3/sprintf
+https://www.thegeekstuff.com/2010/09/change-timezone-in-linux/
+https://linux.die.net/man/3/clock_gettime
+http://man7.org/linux/man-pages/man2/poll.2.html
+https://linux.die.net/man/2/creat
+MRAA library documentation: https://iotdk.intel.com/docs/master/mraa/index.html
+http://wiki.seeedstudio.com/Grove-Temperature_Sensor_V1.2/

@@ -1,0 +1,47 @@
+NAME: Danning Yu
+EMAIL: danningyu@ucla.edu
+ID: 305087992
+
+Included files:
+lab0.c: Source code for this project, written in C, that uses getopt_long to parse arguments and copies text from an specified input to a specifed output. By default copies from stdin to stdout, but stdin can be changed to a file using --input=file_name, and stdout can be changed to a file using --output=file_name. The program can be forced to commit a segmentation fault using the --segfault option, and the segmentation fault can be caught if the --catch option is also specified.
+
+Makefile: A makefile for compiling lab0.c, creating a distribution tarball, removing files created as a result of compilation or distribution, and a checker for making sure lab0 behaves according to specifications. The "default" target compiles lab0.c using gcc with -Wall -Wextra -g options into an executable named lab0. The "dist" target creates a gzip tarball containing lab0.c, the Makefile, backtrace.png, breakpoint.png, and this README. The "check" target runs the tests that are described in detail below. The "clean" target removes any files created by the Makefile.
+
+backtrace.png: A screenshot from a gdb session showing the result of a stack backtrace conducted after a segmentation fault occurred by running lab0 with the --segfault option.
+
+breakpoint.png: A screenshot from a gdb session  showing the result of placing a breakpoint just before assigning a value to a NULL pointer, with the value of the pointer being printed out and shown to be 0x0, which is NULL. The program run was lab0 with the --segfault option.
+
+Smoke tests (run by make check):
+ 
+test1A: Test --input and --output, making sure the text from input is properly copied to output (input file contains some content as output file) and the exit code is correct.
+
+test1B: Same as test1A but use --input file.txt format instead of --input=file.txt format.
+
+test2: Test the --segfault option: check that the exit code is equal to the segfault exit code, 139.
+
+test3: Test the --segfault option when combined with --catch: program should have an exit code of 4.
+
+test4: Test using --input without specifying a file: program should recognize that there's a missing argument and exit with code 1.
+
+test5: Test passing in --input with a filename that is nonexistent: program should recognize that the file does not exist and exit with code 2.
+
+test6: Similar to test4; test using --output without specifying a file: program should recognize that there's a missing argument and exit with code 1.
+
+test7: Test when an unrecognized argument  is passed in: program should recognize the argument is invalid and exit with code 1.
+
+test8: Test with an input file with read permission turned off: program should recognize that read permission is denied and exit with cod 2.
+
+test9: Test with an output file with write permission turned off: program should recognize that it cannot write to that file and exit with code 3.
+
+test10: Similar with test1A but test copying from a file to stdout. Program should exit with code 0 and stdout should contain same text as what was in the file.
+
+test11: Similar to test1A but test copying from stdin to a file. Program should exit with code 0 and output file should contain same text as what was passed through stdin.
+
+test12: Similar to test1A but test copying from stdin to stdout. Program should exit with code 0 and the contents should be identical.
+
+Resources/links used for this project:
+https://linux.die.net/man/3/getopt_long
+http://man7.org/linux/man-pages/man3/errno.3.html
+https://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html
+https://stackoverflow.com/questions/14599670/what-error-code-does-a-process-that-segfaults-return
+man pages (as listed in the project spec)

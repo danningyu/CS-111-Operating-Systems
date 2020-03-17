@@ -1,0 +1,82 @@
+Github:
+
+// OpenSSL parameters
+SSL_CTX* mssl_context;
+const SSL_METHOD* mssl_method;
+SSL* mssl;
+int mssl_ret;
+
+void SSL_init()
+{
+	
+}
+
+void SSL_close()
+{
+	SSL_shutdown(mssl);
+	SSL_free(mssl);
+}
+
+void deallocate()
+{
+	// close the contexts
+	SSL_close();
+	mraa_aio_close(tmp_sensor);
+	close(client_socket_fd);
+}
+
+SSL_library_init();
+	SSL_load_error_strings();
+	OpenSSL_add_all_algorithms();
+	mssl_method = SSLv23_client_method();
+	mssl_context = SSL_CTX_new(mssl_method);
+	if (mssl_context == NULL)
+		report_error_and_exit("Error creating the ssl context");
+	mssl = SSL_new(mssl_context);
+	if (mssl == NULL)
+		report_error_and_exit("Error creating the ssl object");
+	if (SSL_set_fd(mssl, client_socket_fd) == 0)
+		report_error_and_exit("Error linking the socket with ssl");
+	if (SSL_connect(mssl) <= 0)
+	{	
+		SSL_close();
+		report_error_and_exit("Error in SSL handshake");
+	}
+
+	nread = SSL_read(mssl, buffer, MAXBYTES);
+	mssl_ret = SSL_write(mssl, report, nwrite);
+
+Website 1 code: TLS1.2 communication
+	SSL_CTX *ctx;
+    int server;
+    SSL *ssl;
+    SSL_library_init();
+    SSL_METHOD *method;
+    SSL_CTX *ctx;
+    OpenSSL_add_all_algorithms();  /* Load cryptos, et.al. */
+    SSL_load_error_strings();   /* Bring in and register error messages */
+    method = TLSv1_2_client_method();  /* Create new client-method instance */
+    ctx = SSL_CTX_new(method);   /* Create new context */
+    if ( ctx == NULL )
+    {
+        ERR_print_errors_fp(stderr);
+        abort();
+    }
+    return ctx;
+    server = OpenConnection(hostname, atoi(portnum));
+    ssl = SSL_new(ctx);      /* create new SSL connection state */
+    SSL_set_fd(ssl, server);    /* attach the socket descriptor */
+    if ( SSL_connect(ssl) == FAIL )   /* perform the connection */
+        ERR_print_errors_fp(stderr);
+    else
+    {         printf("\n\nConnected with %s encryption\n", SSL_get_cipher(ssl));
+        ShowCerts(ssl);        /* get any certs */
+        SSL_write(ssl,acClientRequest, strlen(acClientRequest));   /* encrypt & send message */
+        bytes = SSL_read(ssl, buf, sizeof(buf)); /* get reply & decrypt */
+        buf[bytes] = 0;
+        printf("Received: \"%s\"\n", buf);
+        SSL_free(ssl); 
+    }
+
+        close(server);         /* close socket */
+    SSL_CTX_free(ctx);        /* release context */

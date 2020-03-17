@@ -1,0 +1,24 @@
+NAME: Danning Yu
+EMAIL: danningyu@ucla.edu
+ID: 305087992
+
+Beaglebone serial number: BBGW18033086
+
+MAC address: 2c:f7:f1:06:80:0d
+
+IP address used for wifi connection: 172.20.10.2
+
+Files included in the tarball:
+my_beaglebone.jpg: A picture of me holding my assembled Beaglebone.
+
+connected.png: A picture showing the hostname of the Beaglebone and the result of the `ifconfig' command.
+
+copy.png: A picture showing my local terminal where I used the `scp' command to copy a hello_world.c file from my ccomputer to the Beaglebone over a Wifi SSH connection.
+
+build_run.png: A picture showing me using gcc to compile hello_world.c and then running it.
+
+git.png: A picture showing me cloning one of my Git respositories from Github and then entering the resulting directory and confirming that it was a Git respository.i
+
+Makefile: a Makefile containing a dist target for making the tarball containing all of these files and a clean target for deleting the tarball.
+
+README: the file that you are currently reading.

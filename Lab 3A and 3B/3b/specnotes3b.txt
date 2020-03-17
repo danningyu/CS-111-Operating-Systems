@@ -1,0 +1,104 @@
+---block consistency audits---
+
+    Every block pointer in an I-node or indirect block should be valid (a legal data block, within the file system) or zero. 
+    Examine every single block pointer in every single I-node, direct block, indirect block, double-indirect block, and triple 
+    indirect block to ascertain that this is true
+    INVALID BLOCK 101 IN INODE 13 AT OFFSET 0
+	INVALID INDIRECT BLOCK 101 IN INODE 13 AT OFFSET 12
+
+    An INVALID block is one whose number is less than zero 
+        or greater than the highest block in the file system.
+        (we will need to do a calculation of the highest block...)
+    A RESERVED block is one that could not legally be allocated to any file 
+        because it should be reserved for file system metadata 
+        (e.g., superblock, cylinder group summary, free block list, ...)
+        (will need to calculate range of reserved blocks)
+
+    for loop over all inodes, for loop over i_block in nodes, and check
+    every value in i_block[index], use the indirectfunctions to continue
+    this checking
+
+    print out: need block # (the value in i_block[index], inode #, and 
+    logical block offset)
+    
+
+    If a block is not referenced by any file and is not on the free list,
+    (we can get free list from BFREE entry)
+    UNREFERENCED BLOCK 37
+
+    make a set of all block #'s, and then remove as you loop through inodes
+    and the free list, remaining ones will be UNREFERENCED
+
+
+    A block that is allocated to some file might also appear on the free list
+    ALLOCATED BLOCK 8 ON FREELIST
+
+    as you loop through inodes, add referenced blocks in i_block to set,
+    then when loop through free list, check if free block is in that set,
+    if so, then print out error
+
+    If a legal block is referenced by multiple files (or even multiple times in a single file),
+    for each reference to that block: 
+    DUPLICATE BLOCK 8 IN INODE 13 AT OFFSET 0
+	DUPLICATE INDIRECT BLOCK 8 IN INODE 13 AT OFFSET 12
+	DUPLICATE DOUBLE INDIRECT BLOCK 8 IN INODE 13 AT OFFSET 268
+	DUPLICATE TRIPLE INDIRECT BLOCK 8 IN INODE 13 AT OFFSET 65804
+
+    create hash table, with block number as key, array of 
+    structs with inode, offset as the value
+
+    * you will not know that a block is multiply referenced until
+    you find the second reference
+
+    
+
+---inode allocation audits:---
+
+    look at its type and presence in the CSV file
+    unallocated inodes (whose type should be 0)
+        should not appear in inode summaries, but should be in free list
+
+    Every unallocated I-Node should be on a free I-node list
+
+    create set of free inodes, loop through allocated inodes to compare,
+    print out any that appear -> that gets ALLOCATED ones
+
+    create set of all possible inodes, loop through free list and remove
+    those that are referenced, loop through allocated inodes and remove
+    those that are referenced, print out whatever's left
+
+    ALLOCATED INODE 2 ON FREELIST
+	UNALLOCATED INODE 17 NOT ON FREELIST
+
+    check for invalid inode numbers??
+
+---directory consistency audits:---
+
+    Every allocated I-node should be referred to by the a number
+        of directory entries that is equal to the reference count 
+        recorded in the I-node. 
+
+    loop through all dirent lines, create hash table, where key is inode
+    number, value is number of times it's referenced, then loop through
+    allocated inodes and compare i_num_links to the value in hash table
+
+    b/c we print whenever it's different, it should capture UNREFERENCED
+    indoes too
+
+    Directory entries should only refer to valid and allocated I-nodes.
+        An INVALID I-node is one whose number is less than 1 or greater 
+        than the last I-node in the system.
+
+    Get range of valid inode numbers, check when looping through dirents
+
+    create set of all free inodes (from looping through IFREE)
+    then check if dirent's inode is in that set, if so, print UNALLOCATED
+
+    We also know that every directory should begin with two links, 
+        one to itself (.) and one to its parent (..). While scanning
+        each directory, check for the correctness of these two links
+
+    for every dir, check that . is at offset 0 and exists
+    and that .. is at offset 12 (is it always 12?) and exists
+        or rather, it is the second entry in the dirent
+    
