@@ -14,3 +14,5 @@ Detailed README describing each project can be found in the project's respective
 | 4A      | Beaglebone, Temperature Sensor, and Button Setup                       |
 | 4B      | Data Acquisition from a Temperature Sensor                             |
 | 4C      | TCP and TLS Communication of Temperature Data to Remote Server         |
+
+Note: Projects 3A and 3B were done with a partner, and version control was implemented using git.
